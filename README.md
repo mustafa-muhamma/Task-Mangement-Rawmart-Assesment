@@ -57,6 +57,10 @@ Run the application:
 npm run dev
 # App running on http://localhost:5173
 ```
+---
+
+## 🐳 Docker Support
+A Dockerfile is included to simplify local setup and ensure a consistent development environment across different machines.
 
 ---
 
