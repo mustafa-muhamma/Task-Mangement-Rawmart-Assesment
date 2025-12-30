@@ -43,7 +43,9 @@ app.get('/', (req, res) => {
 });
 
 // Start Server (Only if not in Vercel environment)
-if (process.env.NODE_ENV !== 'production') {
+// Start Server
+// Ensure it runs if executed directly (Docker) or in dev mode, but allows export for Vercel
+if (require.main === module || process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
     });
