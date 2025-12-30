@@ -94,8 +94,7 @@ npm run dev
 5.  **Styling**: No UI library (like Material UI) was used for components. Everything is custom-built with **Tailwind CSS** to demonstrate CSS proficiency and implement the specific "Glassmorphism" aesthetic.
 
 ---
-
 ## 📦 Deployment
-*   **Backend**: Deployed on Vercel (Serverless).
-*   **Frontend**: Ready for Vercel/Netlify.
-*   **Database**: PostgreSQL.
+* **Frontend**: Vercel.
+* **Backend**: Vercel (Serverless).
+* **Database**: PostgreSQL hosted on Supabase.
