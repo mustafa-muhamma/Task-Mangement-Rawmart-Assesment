@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import PublicRoute from './components/PublicRoute';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
