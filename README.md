@@ -5,10 +5,11 @@ A full-stack Task Management Application built with a generic **Service-Oriented
 ## 📸 Screenshots
 
 ### Login Screen
-![Login Screen](/C:/Users/shakh/.gemini/antigravity/brain/729d03c9-c631-46e3-8bfc-165d1a36cb21/uploaded_image_1_1767122677644.png)
+![Login Screen](https://github.com/user-attachments/assets/c55eeff2-d54b-4be0-92c8-6211847dbe36)
 
 ### Dashboard with Pagination
-![Dashboard](/C:/Users/shakh/.gemini/antigravity/brain/729d03c9-c631-46e3-8bfc-165d1a36cb21/uploaded_image_0_1767122677644.png)
+![Dashboard](https://github.com/user-attachments/assets/cbf48fd4-08c3-493e-a1b2-eb6a673c3627)
+
 
 ---
 
