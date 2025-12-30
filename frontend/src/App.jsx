@@ -26,7 +26,7 @@ function App() {
             </Route>
 
             {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </TaskProvider>
       </AuthProvider>
