@@ -1,55 +1,74 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
 
-const authRoutes = require('./routes/authRoutes');
-const taskRoutes = require('./routes/taskRoutes');
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
 
-
-// Rate Limiter
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-    message: { error: 'Too many requests, please try again later.' }
-});
+const authRoutes = require("./routes/authRoutes");
+const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(helmet()); // Security headers
-app.use(cors({
-    origin: process.env.CLIENT_URL || '*', // Allow specific origin in production
-    credentials: true
-}));
-app.use(limiter); // Apply rate limiting to all requests
-app.use(morgan('dev')); // Logging
-app.use(express.json());
+app.set("trust proxy", 1);
 
-
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/tasks', taskRoutes);
-
-
-// Root Route
-app.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the Task Management API' });
+// ================= RATE LIMIT =================
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: "Too many requests, please try again later." },
+    validate: { xForwardedForHeader: false, forwardedHeader: false }
 });
 
-// Start Server (Only if not in Vercel environment)
-// Start Server
-// Ensure it runs if executed directly (Docker) or in dev mode, but allows export for Vercel
-if (require.main === module || process.env.NODE_ENV !== 'production') {
+// ================= MIDDLEWARE =================
+app.use(helmet());
+
+const allowedOrigins = [
+    "https://task-mangement-rawmart-assesment-4v.vercel.app",
+    "https://task-mangement-rawmart-assesment.vercel.app",
+];
+
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+            return callback(new Error("Not allowed by CORS"));
+        },
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    })
+);
+
+
+
+app.use(limiter);
+app.use(morgan("dev"));
+app.use(express.json());
+
+// ================= ROUTES =================
+app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
+
+// ================= ROOT =================
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to the Task Management API" });
+});
+
+// ================= START SERVER (Local Only) =================
+if (process.env.NODE_ENV !== "production") {
+    const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
+        console.log(`Server running on http://localhost:${PORT}`);
     });
 }
 
 module.exports = app;
-
